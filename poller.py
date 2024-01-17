@@ -22,7 +22,7 @@ async_handler = AsynchronousLogstashHandler(host, port, database_path=None)
 async_handler.setFormatter(formatter)
 logger.addHandler(async_handler)
 
-private_api_token = "3416e930-c99d-4600-bb8e-034647afe95c"
+private_api_token = "<ADD_YOUR_API_TOKEN_HERE>"
 
 # Set Authorization header
 request_headers = {"Authorization": f"Token {private_api_token}",
