@@ -22,16 +22,20 @@ async_handler = AsynchronousLogstashHandler(host, port, database_path=None)
 async_handler.setFormatter(formatter)
 logger.addHandler(async_handler)
 
+## UPDATE ME ##
 private_api_token = "<ADD_YOUR_API_TOKEN_HERE>"
+env_domain = "https://eu1.make.celonis.com"
+##############
 
 # Set Authorization header
 request_headers = {"Authorization": f"Token {private_api_token}",
                    "Content-Type": "application/json"}
 
 # Define the base URL for API requests
-euUrl = "https://eu1.make.celonis.com/api/v2/admin/scenarios/logs"
+euUrl = f"{env_domain}/api/v2/admin/scenarios/logs"
 
 current_time = int(round(time.time() * 1000) - 60000)
+
 # Define initial parameters for the first request
 parameters = {'showCheckRuns': 'true', 'pg[sortDir]': 'asc', 'from': current_time}
 
@@ -95,7 +99,7 @@ async def fetch_logs(parameters):
     headerInfo = {}
     imtIdStr = parameters.get('pg[last]') if 'pg[last]' in parameters else "None"
     connection_attempts = 0
-    print(f"Parameters are: {parameters}")
+    # print(f"Parameters are: {parameters}")
     while connection_attempts < 5:
         try:
             logger.debug(log_message(f" DEBUG: Making API request using imtId: {imtIdStr}"))
@@ -172,7 +176,7 @@ async def fetch_logs(parameters):
                             print(log_message(f" ERROR: Last scenario object was:\n{scenario}"))
                             continue
 
-                    print(log_message(f" INFO: Logging DATA: {data}"))
+                    # print(log_message(f" INFO: Logging DATA: {data}"))
                     # print(log_message(f" INFO: Logging RATELIMITS: {headerInfo}"))
                     # Log API response
                     logger.info(log_message(f" INFO: Logging"), extra=data)
@@ -203,8 +207,8 @@ async def main():
             if 'from' in parameters:
                 del parameters['from']
             parameters['pg[last]'] = pg_last
-            print(log_message(f" DEBUG: Pagination - imtId for next request: {parameters['pg[last]']}"))
-            logger.debug(log_message(f" DEBUG: Pagination - imtId for next request: {parameters['pg[last]']}"))
+            # print(log_message(f" DEBUG: Pagination - imtId for next request: {parameters['pg[last]']}"))
+            # logger.debug(log_message(f" DEBUG: Pagination - imtId for next request: {parameters['pg[last]']}"))
             pg_last = await fetch_logs(parameters)
         else:
             logger.error(log_message(f" ERROR: Unknown pg_last value: {str(pg_last)}"))

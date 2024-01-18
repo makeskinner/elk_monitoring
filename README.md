@@ -7,22 +7,32 @@ This project aims to provide detailed monitoring of any Make environment by coll
 1. **Data Collection:**
    The script utilizes the `requests` library to send HTTP GET requests to the Make API, retrieving log data in JSON format.
 
+   > ***IMPORTANT:***
+   >    The script uses an authentication token with the Make API. Ensure you have created this and defined it in the script. 
+   >    Look for the comment marked `## UPDATE ME ##`
+   >
+   >    1. Base Domain for your API
+   >        - By default the script is looking at the Enterprise EU1 environment "https://eu1.make.celonis.com"
+   >        - Ensure you update this to one relevant to your environment
+   >    2. Add your API Token by updating:
+   >        - `private_api_token = "<ADD_YOUR_API_TOKEN_HERE>"`
 2. **Data Processing:**
-   The script parses the JSON data, extracting relevant information such as timestamp, organizationId, scenarioId, teamId, and other metrics.
+   The script parses the JSON data, extracting relevant information such as `timestamp`, `organizationId`, `scenarioId`, `teamId`, and other metrics.
 
 3. **Data Formatting:**
    The extracted data is formatted into a dictionary structure, ensuring consistent and structured data representation.
 
 4. **Data Sending:**
-   The formatted data is sent to Logstash using the asynchronous logging library asyncio and the AsynchronousLogstashHandler class.
+   The formatted data is sent to Logstash using the asynchronous logging library `asyncio` and the `AsynchronousLogstashHandler` class.
 
 ## Logstash Processing
 
-The processed data is received by Logstash, which performs further parsing, enrichment, and transformation using the logstash.conf file. The processed data is then stored in Elasticsearch, a centralized data store for indexing, querying, and analyzing the collected information.
+The processed data is received by Logstash, which performs further parsing, enrichment, and transformation using the `logstash.conf` file. The processed data is then stored in Elasticsearch, a centralized data store for indexing, querying, and analyzing the collected information.
 
 ## Visualization and Analysis
 
 Elasticsearch is integrated with Kibana, a powerful data visualization tool, enabling users to create interactive dashboards and charts for analyzing system performance, application logs, and other metrics. Kibana provides a user-friendly interface for exploring and extracting insights from the data collected from various sources.
+The GitHub repository contains a dashboard that can be imported, providing you with a good starting point.
 
 ## Advantages
 
