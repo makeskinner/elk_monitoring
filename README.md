@@ -1,11 +1,11 @@
 # Make Environment Monitoring System with Python and Docker
 
-This project aims to provide detailed monitoring of any Make.com environment by collecting data from various sources, processing it, and sending it to Elasticsearch for centralized visualization and analysis. The Python script (newPoller.py) plays a crucial role in retrieving log data from the Make.com API and sending it to Logstash for further processing.
+This project aims to provide detailed monitoring of any Make environment by collecting data from various sources, processing it, and sending it to Elasticsearch for centralized visualization and analysis. The Python script (newPoller.py) plays a crucial role in retrieving log data from the Make API and sending it to Logstash for further processing.
 
 ## Overview
 
 1. **Data Collection:**
-   The script utilizes the `requests` library to send HTTP GET requests to the Make.com API, retrieving log data in JSON format.
+   The script utilizes the `requests` library to send HTTP GET requests to the Make API, retrieving log data in JSON format.
 
 2. **Data Processing:**
    The script parses the JSON data, extracting relevant information such as timestamp, organizationId, scenarioId, teamId, and other metrics.
@@ -38,4 +38,4 @@ Elasticsearch is integrated with Kibana, a powerful data visualization tool, ena
 
 ## Conclusion
 
-This project demonstrates a comprehensive approach to monitoring Make.com environments using Python, Docker, and Elasticsearch. The Python script plays a key role in retrieving log data from the Make.com API and sending it to Logstash for further processing and visualization using Kibana. This solution provides a centralized platform for tracking system performance, application logs, and critical metrics, empowering users to optimize their Make.com environments and troubleshoot issues effectively.
+This project demonstrates a comprehensive approach to monitoring Make environments using Python, Docker, and Elasticsearch. The Python script plays a key role in retrieving log data from the Make API and sending it to Logstash for further processing and visualization using Kibana. This solution provides a centralized platform for tracking system performance, application logs, and critical metrics, empowering users to optimize their Make environments and troubleshoot issues effectively.
