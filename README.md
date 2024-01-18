@@ -1,4 +1,4 @@
-# Make.com Environment Monitoring System with Python and Docker
+# Make Environment Monitoring System with Python and Docker
 
 This project aims to provide detailed monitoring of any Make.com environment by collecting data from various sources, processing it, and sending it to Elasticsearch for centralized visualization and analysis. The Python script (newPoller.py) plays a crucial role in retrieving log data from the Make.com API and sending it to Logstash for further processing.
 
