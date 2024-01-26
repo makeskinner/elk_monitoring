@@ -42,12 +42,12 @@ The GitHub repository contains a dashboard that can be imported, providing you w
 ## Implementation
 The project leverages Docker to manage and orchestrate the various components of the monitoring system. The gitHub repo contains all the necessary files and information you will require in order to get up and running.
 
-# Pre-requisites
+### Pre-requisites
 1. Create your own Make API Key
    - You will need this for authentication
 3. Ensure you are aware of any VPN requirements and have it connected while running the tool
 
-# Key Components and Their Roles
+### Key Components and Their Roles
 | Component | Role |
 | --------- | ---- |
 | Python Script (poller.py) | Collects log data from the Make API |
