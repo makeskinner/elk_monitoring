@@ -179,7 +179,8 @@ The project leverages Docker to manage and orchestrate the various components of
    6. **Add a Data View:** This will need to match the index name defined in ```logstash.yml```
       - For the default index enter make into the Index Pattern field
       - You should see the index name created by Logstash in the right hand area of the screen:
-         - image-20240118-111643.png
+         - ![image](https://github.com/makeskinner/elk_monitoring/assets/147710503/20802838-03a0-4e51-98e7-d3ccf1f7f4b6)
+
          **NB:** This screenshot shows ent-scenario-logs: Ignore, just use a pattern that matches what you see here, so long as it’s an Index, not a Data stream
          Once the pattern matches the index the Timestamp field will be populated with the default value ```@timestamp```. Keep this as it is.
    
