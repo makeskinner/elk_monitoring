@@ -1,3 +1,9 @@
+# Copyright (c) 2024, Mark Skinner
+# All rights reserved.
+
+# This source code is licensed under the BSD-style license found in the
+# LICENSE file in the root directory of this source tree. 
+
 import asyncio
 import datetime
 import json
@@ -24,7 +30,7 @@ logger.addHandler(async_handler)
 
 ## UPDATE ME ##
 private_api_token = "<ADD_YOUR_API_TOKEN_HERE>"
-env_domain = "https://eu1.make.celonis.com"
+env_domain = "<REPLACE_WITH_YOUR_DOMAIN: EG: https://eu1.make.celonis.com>"
 ##############
 
 # Set Authorization header
@@ -32,7 +38,7 @@ request_headers = {"Authorization": f"Token {private_api_token}",
                    "Content-Type": "application/json"}
 
 # Define the base URL for API requests
-euUrl = f"{env_domain}/api/v2/admin/scenarios/logs"
+envUrl = f"{env_domain}/api/v2/admin/scenarios/logs"
 
 current_time = int(round(time.time() * 1000) - 60000)
 
@@ -99,36 +105,38 @@ async def fetch_logs(parameters):
     headerInfo = {}
     imtIdStr = parameters.get('pg[last]') if 'pg[last]' in parameters else "None"
     connection_attempts = 0
+    rateRemainingRequests = 1000
     # print(f"Parameters are: {parameters}")
     while connection_attempts < 5:
         try:
             logger.debug(log_message(f" DEBUG: Making API request using imtId: {imtIdStr}"))
-            response = requests.get(euUrl, headers=request_headers, params=parameters)
+            response = requests.get(envUrl, headers=request_headers, params=parameters)
             headerInfo["statusCode"] = response.status_code
             json_data = response.json()
             if response.status_code == 200:
-                logger.debug(log_message(f" DEBUG: API response received"))
+                logger.debug(log_message(f" DEBUG: API 200 response received"))
                 # Save the relevant header info
                 if 'X-RateLimit-Remaining' in response.headers:
-                    headerInfo["rateLimitRemaining"] = int(response.headers['X-RateLimit-Remaining'])
+                    rateRemainingRequests = int(response.headers['X-RateLimit-Remaining'])
+                    headerInfo["rateLimitRemaining"] = rateRemainingRequests
                     headerInfo["rateLimitReset"] = datetime.datetime.fromtimestamp(int(response.headers['X-RateLimit-Reset']))
+                    if rateRemainingRequests < 100:
+                        print(log_message(f" WARNING: API Rate Limit is close, you have {rateRemainingRequests} requests remaining!"))
+                        logger.warning(log_message(f" WARNING: API Rate Limit is close, you have {rateRemainingRequests} requests remaining!"))
                 break
             else:
                 parsed_error_data = parse_api_error_response(json_data)
                 logger.error(log_message(f" ERROR: Status Code: {response.status_code} & Message: {parsed_error_data}"))
                 return 'Wait'
-        except TimeoutError:
-            logger.error(log_message(f" ERROR: Timeout error while fetching logs"))
-            return 'Wait'
-        except ConnectionRefusedError:
-            # Connection is closed, wait for a short duration and retry
-            logger.error(log_message(f" ERROR: Connection refused while fetching logs"))
-            time.sleep(5)
+        except requests.exceptions.ConnectionError as e:
+            print(log_message(f"Connection error: {e}"))
             connection_attempts += 1
             if connection_attempts == 5:
-                logger.error(log_message(f" ERROR: Failed to connect to Logstash after 5 attempts!"))
-                raise Exception("Failed to connect to Logstash after 5 attempts")
-                return "ConnectionRefusedError"
+                logger.exception(log_message(f" EXCEPTION: Failed to connect to the Make API after 5 attempts! {e}"), exc_info=True)
+                raise Exception("Failed to connect to the Make API after 5 attempts")
+                return "ConnectionError"
+            else:
+                time.sleep(60)  # Wait for 1 minute before retrying
 
     try:
         # Process and format data
@@ -202,6 +210,12 @@ async def main():
             print(log_message(f" INFO: Sleeping for 30 seconds..."))
             await asyncio.sleep(30)
             pg_last = await fetch_logs(parameters)
+        elif pg_last == "ConnectionError":
+            # Sleep for longer before checking for new logs again
+            print(log_message(f" WARN: No API connection, sleeping for 5 minutes..."))
+            logger.error(log_message(f" WARN: Unknown pg_last value: {str(pg_last)}"))
+            await asyncio.sleep(300)
+            pg_last = await fetch_logs(parameters)
         # Use the pg_last value for subsequent requests
         elif 'scenario' in pg_last:
             if 'from' in parameters:
@@ -217,7 +231,6 @@ async def main():
 # Create an event loop
 loop = asyncio.new_event_loop()
 print(log_message(f" INFO: Logging starting"))
-logger.debug(log_message(f" INFO: Logging starting"))
 try:
   loop.run_until_complete(main())
 except Exception as e:
@@ -234,10 +247,10 @@ except Exception as e:
     print("-" * 70)
 
   # Print the exception message
-  print(f"FATAL Exception: {str(e)}")
+  print(log_message(f" FATAL Exception: {str(e)}"))
 
   # Log the exception to the logger
-  logger.exception(f"FATAL EXCEPTION: {str(e)}")
+  logger.exception(log_message(f" FATAL EXCEPTION: {str(e)}", exc_info=True))
 
   # Gracefully close the event loop
   loop.close()

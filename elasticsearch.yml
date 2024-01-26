@@ -1,0 +1,13 @@
+# Map ES_JAVA_OPTS to xms and xmx
+heap.initial_size: 1G
+heap.max_size: 3G
+
+# Map ES_HEAP_SIZE to heap.size
+heap.size: 2G
+
+gc.disable_collection: true
+
+index.refresh_interval: 1m
+
+# Define replica setting directly in elasticsearch.yml
+cluster.routing.allocation.disk.threshold_enabled: false
