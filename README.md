@@ -34,6 +34,9 @@ The processed data is received by Logstash, which performs further parsing, enri
 Elasticsearch is integrated with Kibana, a powerful data visualization tool, enabling users to create interactive dashboards and charts for analyzing system performance, application logs, and other metrics. Kibana provides a user-friendly interface for exploring and extracting insights from the data collected from various sources.
 The GitHub repository contains a dashboard that can be imported, providing you with a good starting point.
 
+![image-20240118-114321](https://github.com/makeskinner/elk_monitoring/assets/147710503/c94b9e09-6bba-40f7-bb41-b0ed6f6065e1)
+
+
 ## Advantages
 
 * **Centralized Data Collection and Storage:** All data from various sources is collected, processed, and stored in a centralized location, making it easier to analyze and correlate information.
