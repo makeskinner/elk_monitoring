@@ -103,7 +103,7 @@ To use the provided Docker Compose file, follow these steps:
 1. **Set Environment Variables:** Set the appropriate environment variables in the ```.env``` file:
    - You can leave everything as it is, but i’d suggest understanding memory requirements.
 > [!TIP]
-> Pay attention to the memory defined in the ```elasticsearch.yml``` file. You will need to tailor this to your specific needs. You may start with what's here and monitor your elastic container so understand whether or not you need to modify.
+> Pay attention to the memory defined in the ```elasticsearch.yml``` file. You will need to tailor this to your specific needs. You may start with what's here and monitor your elastic container to understand whether or not you need to modify.
 ```Dockerfile
 # Project namespace (defaults to the current folder name if not set)
 #COMPOSE_PROJECT_NAME=myproject
