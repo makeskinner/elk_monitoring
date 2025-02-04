@@ -145,16 +145,12 @@ ENCRYPTION_KEY=c34d38b3a14956121ff2170e5030b471551370178f43e5626eec58b04a30fae2
 ```
 2. **Build the Docker Images:** Build the Docker images for the services using the following command:
 ```   
-docker-compose build -f <path/to/docker-compose.yml>
+docker compose up -d
 ```
-3. **Start the Services:** Start the Docker services using the following command:
-```
-docker-compose up -d
-```
-4. **Access Kibana:** Open your web browser and navigate to http://localhost:5601
+3. **Access Kibana:** Open your web browser and navigate to http://localhost:5601
    - Use the credentials elastic and <your_kibana_password> to access Kibana.
    - If you haven’t changed the values defined within the ```.env``` file then the password will be ```changeme```.
-5. **Add a Data View:** This will need to match the index name defined in ```logstash.yml```
+4. **Add a Data View:** This will need to match the index name defined in ```logstash.yml```
    - For the default index enter ```make``` into the Index Pattern field
    - You should see the index name created by Logstash in the right hand area of the screen:
       - ![image](https://github.com/makeskinner/elk_monitoring/assets/147710503/20802838-03a0-4e51-98e7-d3ccf1f7f4b6)
@@ -162,7 +158,7 @@ docker-compose up -d
       **NB:** This screenshot shows ent-scenario-logs: Ignore, just use a pattern that matches what you see here, so long as it’s an Index, not a Data stream
       Once the pattern matches the index the Timestamp field will be populated with the default value ```@timestamp```. Keep this as it is.
 
-7. **Import the Dashboard:** Use Stack Management from the hamburger menu
+5. **Import the Dashboard:** Use Stack Management from the hamburger menu
    - View Saved Objects within the Kibana menu items
    - Click the Import button and select ```exampleDashboard.ndjson``` from your local environment
 
