@@ -16,7 +16,7 @@ This project aims to provide detailed monitoring of any Make environment by coll
 >    2. Add your API Token by updating:
 >        - `private_api_token = "<ADD_YOUR_API_TOKEN_HERE>"`
 1. **Data Collection:**
-   The Python script retrieves log data from the [Make API](https://www.make.com/en/api-documentation/scenarios-scenarioId-logs-get), processes it by extracting relevant information and formatting it, and then sends it to Logstash for further processing and storage in Elasticsearch.
+   The Python script retrieves log data from the [Make API](https://developers.make.com/api-documentation/api-reference/scenarios-greater-than-logs), processes it by extracting relevant information and formatting it, and then sends it to Logstash for further processing and storage in Elasticsearch.
    The script utilizes the `requests` library to send HTTP GET requests to the Make API, retrieving log data in JSON format.
 2. **Data Processing:**
    The script parses the JSON data, extracting relevant information such as `timestamp`, `organizationId`, `scenarioId`, `teamId`, and other metrics.
